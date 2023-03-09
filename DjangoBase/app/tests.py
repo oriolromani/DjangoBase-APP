@@ -4,6 +4,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework import status
 
 from .views import ProductListView
+from .utils import longest_word
 
 
 class ProductViewTests(TestCase):
@@ -33,3 +34,10 @@ class ProductViewTests(TestCase):
         request = factory.get(url, format="json")
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class TestUtils(TestCase):
+    def test_given_example(self):
+        letters = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']
+        word = 'ajsxuytcnhre'
+        self.assertEqual(longest_word(letters, word), 'saturn')
