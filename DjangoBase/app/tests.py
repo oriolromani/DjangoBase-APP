@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework.test import APIRequestFactory
 from rest_framework import status
 
-from .views import ProductListView
+from .views import ProductListView, SearchCoords
 from .utils import longest_word
 
 
