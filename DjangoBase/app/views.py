@@ -14,14 +14,21 @@ class ProductListView(generics.ListCreateAPIView):
 
 class SearchCoords(APIView):
 
-    def get(self, request, product_name):
+    def get_queryset(self):
         products = Product.objects.all()
-        products_names = [product.name for product in products]
-        result = longest_word(products_names, product_name)
-        print(result)
-        if result:
-            product = products.first()
-            serializer = ProductSerializer(product)
-            return Response(serializer.data)
-        else:
-            return Response(status='404')
+        product_name = self.request.query_params.get('product.name')
+        if product_name:
+            products_names = [product.name for product in products]
+            result = longest_word(products_names, product_name)
+            if result:
+                return products.filter(name=result)
+        return []
+
+    def get(self, request, format=None):
+        products = self.get_queryset()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+
+
